@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
+import CommentWrite from './CommentWrite';
+import CommentItem from './CommentItem';
 
 class Comments extends PureComponent {
   render() {
     return (
-      <div>comments</div>
+      <div style={{ margin: '0 20% 0 15%' }}>
+        <CommentWrite />
+        <CommentItem />
+      </div>
     );
   }
 }
