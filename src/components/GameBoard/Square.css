@@ -1,0 +1,178 @@
+.tile {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    text-align: center;
+    line-height: 85px;
+    font-size: 30px;
+    border-radius: 5px;
+    top: 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    transition: transform 150ms ease-out;
+    -moz-transition: transform 150ms ease-out;
+    /* Firefox 4 */
+    -webkit-transition: transform 150ms ease-out;
+    /* Safari 和 Chrome */
+    -o-transition: transform 150ms ease-out;
+    /* Opera */
+    animation: tiledisplay 300ms 1;
+    -webkit-animation: tiledisplay 300ms 1;
+    /* Safari 和 Chrome */
+}
+
+/* square color */
+.tile-2 {
+  color: #fff;
+  background: #2196f3;
+}
+.tile-4 {
+  background: #4caf50;
+}
+.tile-8 {
+  background: #9c27b0;
+}
+.tile-16 {
+  background: #ff5252;
+}
+.tile-32 {
+  background: #e91e63;
+}
+.tile-64 {
+  background: #cddc39;
+}
+.tile-128 {
+  background: #3f51b5;
+}
+.tile-256 {
+  background: #ff9800;
+}
+.tile-512 {
+  background: #673ab7;
+}
+.tile-1024 {
+  background: #009688;
+}
+.tile-2048 {
+  background: #03a9f4;
+}
+.tile-4096 {
+  background: #ffeb3b;
+}
+.tile-8192 {
+  background: #00bcd4;
+}
+    
+/* square position */
+
+.tile-pos-0-0 {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.tile-pos-0-1 {
+  -webkit-transform: translate(0, 90px);
+  -ms-transform: translate(0, 90px);
+  -o-transform: translate(0, 90px);
+  transform: translate(0, 90px);
+}
+
+.tile-pos-0-2 {
+  -webkit-transform: translate(0, 180px);
+  -ms-transform: translate(0, 180px);
+  -o-transform: translate(0, 180px);
+  transform: translate(0, 180px);
+}
+
+.tile-pos-0-3 {
+  -webkit-transform: translate(0, 270px);
+  -ms-transform: translate(0, 270px);
+  -o-transform: translate(0, 270px);
+  transform: translate(0, 270px);
+}
+
+.tile-pos-1-0 {
+  -webkit-transform: translate(90px, 0);
+  -ms-transform: translate(90px, 0);
+  -o-transform: translate(90px, 0);
+  transform: translate(90px, 0);
+}
+
+.tile-pos-1-1 {
+  -webkit-transform: translate(90px, 90px);
+  -ms-transform: translate(90px, 90px);
+  -o-transform: translate(90px, 90px);
+  transform: translate(90px, 90px);
+}
+
+.tile-pos-1-2 {
+  -webkit-transform: translate(90px, 180px);
+  -ms-transform: translate(90px, 180px);
+  -o-transform: translate(90px, 180px);
+  transform: translate(90px, 180px);
+}
+
+.tile-pos-1-3 {
+  -webkit-transform: translate(90px, 270px);
+  -ms-transform: translate(90px, 270px);
+  -o-transform: translate(90px, 270px);
+  transform: translate(90px, 270px);
+}
+
+.tile-pos-2-0 {
+  -webkit-transform: translate(180px, 0);
+  -ms-transform: translate(180px, 0);
+  -o-transform: translate(180px, 0);
+  transform: translate(180px, 0);
+}
+
+.tile-pos-2-1 {
+  -webkit-transform: translate(180px, 90px);
+  -ms-transform: translate(180px, 90px);
+  -o-transform: translate(180px, 90px);
+  transform: translate(180px, 90px);
+}
+
+.tile-pos-2-2 {
+  -webkit-transform: translate(180px, 180px);
+  -ms-transform: translate(180px, 180px);
+  -o-transform: translate(180px, 180px);
+  transform: translate(180px, 180px);
+}
+
+.tile-pos-2-3 {
+  -webkit-transform: translate(180px, 270px);
+  -ms-transform: translate(180px, 270px);
+  -o-transform: translate(180px, 270px);
+  transform: translate(180px, 270px);
+}
+
+.tile-pos-3-0 {
+  -webkit-transform: translate(270px, 0);
+  -ms-transform: translate(270px, 0);
+  -o-transform: translate(270px, 0);
+  transform: translate(270px, 0);
+}
+
+.tile-pos-3-1 {
+  -webkit-transform: translate(270px, 90px);
+  -ms-transform: translate(270px, 90px);
+  -o-transform: translate(270px, 90px);
+  transform: translate(270px, 90px);
+}
+
+.tile-pos-3-2 {
+  -webkit-transform: translate(270px, 180px);
+  -ms-transform: translate(270px, 180px);
+  -o-transform: translate(270px, 180px);
+  transform: translate(270px, 180px);
+}
+
+.tile-pos-3-3 {
+  -webkit-transform: translate(270px, 270px);
+  -ms-transform: translate(270px, 270px);
+  -o-transform: translate(270px, 270px);
+  transform: translate(270px, 270px);
+}

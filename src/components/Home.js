@@ -17,7 +17,6 @@ class Home extends React.Component {
     });
   }
   render() {
-    const content = (<div style={{ background: '#fff', padding: 24 }}>Content</div>);
     const menu = (
       <Menu>
         <Menu.Item>
@@ -48,7 +47,7 @@ class Home extends React.Component {
             </Dropdown>
           </div>
         </Header>
-        <Content style={{ padding: '50px', height: '100%' }}>
+        <Content style={{ padding: '50px', height: '100%', position: 'relative' }}>
           { this.state.ItemIndex === '1'
             ? <Game />
             : (this.state.ItemIndex === '2' ? <Rank /> : <Comments />)}
