@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Avatar, Dropdown } from 'antd';
+import { connect } from 'dva';
 import Rank from './Rank';
 import Comments from './Comment/Comments';
 import Game from './GameBoard/Game';
@@ -60,4 +61,5 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+
+export default connect()(Home);

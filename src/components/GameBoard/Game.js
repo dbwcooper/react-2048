@@ -1,9 +1,80 @@
 import React, { PureComponent } from 'react';
-import { Button, Icon, Row, Col } from 'antd';
+import { Button, Icon, Row } from 'antd';
+import { connect } from 'dva';
 import Style from './Game.css';
 import Square from './Square';
 
+const keyUp = 38;
+const keyRight = 39;
+const keyDown = 40;
+const keyLeft = 37;
+// wsad  上下左右
+const keyW = 87;
+const keyS = 83;
+const keyA = 65;
+const keyD = 68;
+// n -> new game
+const keyN = 78;
 class Game extends PureComponent {
+
+  componentDidMount() {
+    document.addEventListener('keyup', this.onKeyHandle); // eslint-disable-line
+    // document.addEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
+  }
+  // 在当前组件被销毁时同时删除监听事件
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.onKeyHandle, false); // eslint-disable-line
+    // document.removeEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
+  }
+  onKeyHandle(e) {
+    switch (e.keyCode) {
+      case keyW:
+      case keyUp:
+        this.handleMoveUp();
+        break;
+      case keyS:
+      case keyDown:
+        this.handleMoveDown();
+        break;
+      case keyA:
+      case keyLeft:
+        this.handleMoveLeft();
+        break;
+      case keyD:
+      case keyRight:
+        this.handleMoveRight();
+        break;
+      case keyN:
+        this.props.onReset();
+        break;
+      default:
+        break;
+    }
+  }
+  // 上移
+  handleMoveUp() {
+    this.props.dispatch({
+      type: 'game/r_MoveUp',
+    });
+  }
+  // 下移动
+  handleMoveDown() {
+    this.props.dispatch({
+      type: 'game/r_MoveDown',
+    });
+  }
+  // 左移动
+  handleMoveLeft() {
+    this.props.dispatch({
+      type: 'game/r_MoveLeft',
+    });
+  }
+  // 右移动
+  handleMoveRight() {
+    this.props.dispatch({
+      type: 'game/r_MoveRight',
+    });
+  }
   render() {
     return (
       <div className={Style.container}>
@@ -86,4 +157,9 @@ class Game extends PureComponent {
   }
 }
 
-export default Game;
+function mapStateToProps(state) {
+  return {
+    home: state.game,
+  };
+}
+export default connect(mapStateToProps)(Game);
