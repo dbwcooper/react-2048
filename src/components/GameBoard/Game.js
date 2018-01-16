@@ -32,7 +32,7 @@ class Game extends PureComponent {
       case keyW:
       case keyUp:
         this.props.dispatch({
-          type: 'game/e_MoveUp',
+          type: 'game/r_MoveUp',
         });
         break;
       case keyS:
