@@ -18,31 +18,40 @@ const keyN = 78;
 class Game extends PureComponent {
 
   componentDidMount() {
-    document.addEventListener('keyup', this.onKeyHandle); // eslint-disable-line
+    console.log(this);
+    document.addEventListener('keyup', this.onKeyHandle.bind(this)); // eslint-disable-line
     // document.addEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
   }
   // 在当前组件被销毁时同时删除监听事件
   componentWillUnmount() {
-    document.removeEventListener('keyup', this.onKeyHandle, false); // eslint-disable-line
+    document.removeEventListener('keyup', this.onKeyHandle.bind(this), false); // eslint-disable-line
     // document.removeEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
   }
   onKeyHandle(e) {
     switch (e.keyCode) {
       case keyW:
       case keyUp:
-        this.handleMoveUp();
+        this.props.dispatch({
+          type: 'game/e_MoveUp',
+        });
         break;
       case keyS:
       case keyDown:
-        this.handleMoveDown();
+        this.props.dispatch({
+          type: 'game/r_MoveDown',
+        });
         break;
       case keyA:
       case keyLeft:
-        this.handleMoveLeft();
+        this.props.dispatch({
+          type: 'game/r_MoveLeft',
+        });
         break;
       case keyD:
       case keyRight:
-        this.handleMoveRight();
+        this.props.dispatch({
+          type: 'game/r_MoveRight',
+        });
         break;
       case keyN:
         this.props.onReset();
@@ -51,29 +60,18 @@ class Game extends PureComponent {
         break;
     }
   }
-  // 上移
-  handleMoveUp() {
-    this.props.dispatch({
-      type: 'game/r_MoveUp',
-    });
-  }
-  // 下移动
-  handleMoveDown() {
-    this.props.dispatch({
-      type: 'game/r_MoveDown',
-    });
-  }
-  // 左移动
-  handleMoveLeft() {
-    this.props.dispatch({
-      type: 'game/r_MoveLeft',
-    });
-  }
-  // 右移动
-  handleMoveRight() {
-    this.props.dispatch({
-      type: 'game/r_MoveRight',
-    });
+  getSquares() {
+    const squares = this.props.squares;
+    const squareOption = [];
+    for (let i = 0; i < 4; i++) { // eslint-disable-line
+      for (let j = 0; j < 4; j++) { // eslint-disable-line
+        if (squares[i][j].num) {
+          const item = (<Square key={`${i}-${j}-${squares[i][j].num}`} num={squares[i][j].num} pos={`tile-pos-${i}-${j}`} />);
+          squareOption.push(item);
+        }
+      }
+    }
+    return squareOption;
   }
   render() {
     return (
@@ -104,13 +102,7 @@ class Game extends PureComponent {
             </div>
           </div>
           <div className={Style['tile-container']}>
-            <Square num={2} pos={'tile-pos-0-0'} />
-            <Square num={4} pos={'tile-pos-1-0'} />
-            <Square num={8} pos={'tile-pos-2-2'} />
-            <Square num={16} pos={'tile-pos-3-2'} />
-            <Square num={16} pos={'tile-pos-3-0'} />
-            <Square num={16} pos={'tile-pos-2-1'} />
-            <Square num={16} pos={'tile-pos-3-3'} />
+            {this.getSquares()}
           </div>
         </div>
 
@@ -158,8 +150,6 @@ class Game extends PureComponent {
 }
 
 function mapStateToProps(state) {
-  return {
-    home: state.game,
-  };
+  return state.game;
 }
 export default connect(mapStateToProps)(Game);

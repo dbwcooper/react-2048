@@ -18,6 +18,7 @@ class Home extends React.Component {
     });
   }
   render() {
+    console.log(this.props);
     const menu = (
       <Menu>
         <Menu.Item>
