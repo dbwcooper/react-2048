@@ -52,13 +52,46 @@ export default {
       return { ...state, ...newSquare(emptySquares, squares) };
     },
     r_MoveDown(state) {
-      return state;
+      let squares = [...state.squares];
+      let emptySquares = [...state.emptySquares];
+      for (let i = 0; i < 4; i++) { // eslint-disable-line
+        for (let j = 3; j >= 0; j--) { // eslint-disable-line
+          if (squares[i][j].num !== 0 && downMove(i, j, squares)) { // 值不为0且可移动
+            const mySquares = merge({ i, j }, downMove(i, j, squares), squares, emptySquares);// 合并
+            squares = mySquares.squares;
+            emptySquares = mySquares.emptySquares;
+          }
+        }
+      }
+      return { ...state, ...newSquare(emptySquares, squares) };
     },
     r_MoveLeft(state) {
-      return state;
+      let squares = [...state.squares];
+      let emptySquares = [...state.emptySquares];
+      for (let i = 1; i < 4; i++) { // eslint-disable-line
+        for (let j = 0; j < 4; j++) { // eslint-disable-line
+          if (squares[i][j].num !== 0 && leftMove(i, j, squares)) { // 值不为0且可移动
+            const mySquares = merge({ i, j }, leftMove(i, j, squares), squares, emptySquares);// 合并
+            squares = mySquares.squares;
+            emptySquares = mySquares.emptySquares;
+          }
+        }
+      }
+      return { ...state, ...newSquare(emptySquares, squares) };
     },
     r_MoveRight(state) {
-      return state;
+      let squares = [...state.squares];
+      let emptySquares = [...state.emptySquares];
+      for (let i = 3; i >=0; i--) { // eslint-disable-line
+        for (let j = 0; j < 4; j++) { // eslint-disable-line
+          if (squares[i][j].num !== 0 && rightMove(i, j, squares)) { // 值不为0且可移动
+            const mySquares = merge({ i, j }, rightMove(i, j, squares), squares, emptySquares);// 合并
+            squares = mySquares.squares;
+            emptySquares = mySquares.emptySquares;
+          }
+        }
+      }
+      return { ...state, ...newSquare(emptySquares, squares) };
     },
     r_Merge(state) {
       return state;
@@ -70,35 +103,20 @@ export default {
 
 };
 
+
 /**
- *
- * @param {* 空白数组方块} emptySquares
- * @param {* 显示数组方块} squares
+ * 向上移动
+ * @param {* 横坐标} i
+ * @param {* 纵坐标} j
+ * @param {* 显示的方块数组} mySquares
  */
-const newSquare = (emptySquares, squares) => {
-  const { x, y, index } = randomPos(emptySquares); // 拿到坐标和当前随机生成的方块的位置
-  const num = Math.random() < 0.9 ? 2 : 4;// 随机新方块数值2或4
-  squares[x][y] = { num }; // eslint-disable-line
-  emptySquares.splice(index, 1);
-  return { emptySquares, squares };
-};
-
-// 从空白方块数组中随机找一个出来 这里返回空白数组中的位置index
-const randomPos = (emptySquares) => {
-  const index = Math.floor(Math.random() * emptySquares.length);
-  const x = emptySquares[index].x;
-  const y = emptySquares[index].y;
-  return { x, y, index };
-};
-
-// 上移 根据传入方块的位置 返回方块移动之后的位置
-let upMove = (i, j, mySquares) => {
-  let num = mySquares[i][j].num;
+let upMove = (i, j, squares) => {
+  let num = squares[i][j].num;
   let moveJ = j; // 上下移动只改变 j
   for (let n = j - 1; n >= 0; n--) { // eslint-disable-line
-    if (mySquares[i][n].num === 0) {
+    if (squares[i][n].num === 0) {
       moveJ = n;
-    } else if (mySquares[i][n].num === num) {
+    } else if (squares[i][n].num === num) {
       moveJ = n;
       num *= 2;
       if (num === 2048) {
@@ -121,7 +139,99 @@ let upMove = (i, j, mySquares) => {
   return { moveI: i, moveJ, num };
 };
 
-// 更改空白数组 和 显示数组
+/**
+ * 向下移动
+ * @param {* 横坐标} i
+ * @param {* 纵坐标} j
+ * @param {* 显示的方块数组} mySquares
+ */
+const downMove = (i, j, squares) => {
+  let num = squares[i][j].num;
+  let moveJ = j; // 上下移动只改变 j
+  for (let n = j + 1; n < 4; n++) { // eslint-disable-line
+    if (squares[i][n].num === 0) {
+      moveJ = n;
+    } else if (squares[i][n].num === num) {
+      num *= 2;
+      moveJ = n;
+      if (num === 2048) {
+        console.log('游戏结束');
+      }
+      break;
+    } else {
+      break;
+    }
+  }
+  if (moveJ === j) {
+    return false;
+  }
+  if (!(i + 1) || !(moveJ + 1)) {
+    return;
+  }
+  return { moveI: i, moveJ, num };
+};
+
+
+const leftMove = (i, j, squares) => {
+  let num = squares[i][j].num;
+  let moveI = i; // 左右移动只改变 i
+  for (let n = i - 1; n >= 0; n--) { // eslint-disable-line
+    if (squares[n][j].num === 0) {
+      moveI = n;
+    } else if (squares[n][j].num === num) {
+      num *= 2;
+      moveI = n;
+      if (num === 2048) {
+        console.log('游戏结束');
+      }
+      break;
+    } else {
+      break;
+    }
+  }
+  if (moveI === i) {
+    return false;
+  }
+  if (!(j + 1) || !(moveI + 1)) {
+    return false;
+  }
+  return { moveI, moveJ: j, num };
+};
+
+const rightMove = (i, j, squares) => {
+  let num = squares[i][j].num;
+  let moveI = i; // 左右移动只改变 i
+  for (let n = i + 1; n < 4 ; n++) { // eslint-disable-line
+    if (squares[n][j].num === 0) {
+      moveI = n;
+    } else if (squares[n][j].num === num) {
+      num *= 2;
+      moveI = n;
+      if (num === 2048) {
+        console.log('游戏结束');
+      }
+      break;
+    } else {
+      break;
+    }
+  }
+  if (moveI === i) {
+    return false;
+  }
+  if (!(j + 1) || !(moveI + 1)) {
+    return false;
+  }
+  return { moveI, moveJ: j, num };
+};
+
+
+/**
+ * 合并两个方块 并更改对应的空白数组和显示方块的数组
+ * @param {* 方块移动前的位置} beforeMove
+ * @param {* 方块移动后的位置 以及移动后的数字大小} afterMove
+ * @param {* 整个显示方块的数组} squares
+ * @param {* 空白方块数组} emptySquares
+ */
 let merge = (beforeMove, afterMove, squares, emptySquares) => {
   squares[beforeMove.i][beforeMove.j].num = 0; // eslint-disable-line
   squares[afterMove.moveI][afterMove.moveJ].num = afterMove.num; // eslint-disable-line
@@ -132,4 +242,28 @@ let merge = (beforeMove, afterMove, squares, emptySquares) => {
     }
   });
   return { squares, emptySquares };
+};
+
+/**
+ *
+ * @param {* 空白数组方块} emptySquares
+ * @param {* 显示数组方块} squares
+ */
+const newSquare = (emptySquares, squares) => {
+  const { x, y, index } = randomPos(emptySquares); // 拿到坐标和当前随机生成的方块的位置
+  const num = Math.random() < 0.9 ? 2 : 4;// 随机新方块数值2或4
+  squares[x][y] = { num }; // eslint-disable-line
+  emptySquares.splice(index, 1);
+  return { emptySquares, squares };
+};
+
+/**
+ * 从空白方块数组中随机找一个出来 这里返回空白数组中的位置 和对应的index
+ * @param {*} emptySquares
+ */
+const randomPos = (emptySquares) => {
+  const index = Math.floor(Math.random() * emptySquares.length);
+  const x = emptySquares[index].x;
+  const y = emptySquares[index].y;
+  return { x, y, index };
 };
