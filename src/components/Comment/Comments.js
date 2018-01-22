@@ -8,6 +8,17 @@ class Comments extends PureComponent {
       <div style={{ margin: '0 20% 0 15%' }}>
         <CommentWrite />
         <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
+        <CommentItem />
       </div>
     );
   }
