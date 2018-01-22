@@ -29,7 +29,7 @@ class Home extends React.Component {
       </Menu>
     );
     return (
-      <Layout className="layout" style={{ position: 'relative', width: '100%', minWidth: '1080px', minHeight: '950px' }}>
+      <Layout className="layout" style={{ position: 'relative', width: '100%', minWidth: '1080px', minHeight: '950px', backgroundColor: '#fff' }}>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Menu
             theme="dark"

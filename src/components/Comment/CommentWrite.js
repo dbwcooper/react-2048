@@ -25,7 +25,7 @@ class CommentWrite extends PureComponent {
           </Col>
           <Col span={22} style={{ textAlign: 'right' }}>
             <TextArea rows={4} />
-            <Button style={{ marginTop: 8 }}> 评论 </Button>
+            <Button style={{ margin: '8px 0' }}> 评论 </Button>
           </Col>
         </Row>
       </div>

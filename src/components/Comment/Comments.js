@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import CommentWrite from './CommentWrite';
 import CommentItem from './CommentItem';
 
@@ -23,4 +24,7 @@ class Comments extends PureComponent {
     );
   }
 }
-export default Comments;
+function mapStateToProps(state) {
+  return state.comments;
+}
+export default connect(mapStateToProps)(Comments);
