@@ -5,33 +5,35 @@ export default {
     squares: [],
     bestScore: 0,
     score: 0,
+    voice: true,
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line 
-      dispatch({ type: 'save' });
+      dispatch({ type: 'e_Init' });
     },
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      yield put({ type: 'save' });
+    *e_Init({ payload }, { put }) {
+      yield put({ type: 'r_Init' });
     },
   },
 
   reducers: {
-    save(state) {
+    r_Init(state) {
       const empty = [];
-      const squares = new Array(4);
+      const mySquares = new Array(4);
       // 初始化空白坐标的数组
       for (let i = 0; i < 4; i++) { // eslint-disable-line
-        squares[i] = []; // 必须要这样做定义一行为一个空数组对象
+        mySquares[i] = []; // 必须要这样做定义一行为一个空数组对象
         for (let j = 0; j < 4; j++) { // eslint-disable-line
-          squares[i][j] = { num: 0 };
+          mySquares[i][j] = { num: 0 };
           empty.push({ x: i, y: j });
         }
       }
-      return { ...state, ...newSquare(empty, squares) };
+      const { emptySquares, squares } = newSquare(empty, mySquares);
+      return { ...state, ...newSquare(emptySquares, squares), score: 0 };
     },
     r_MoveUp(state) {
       let squares = [...state.squares];
@@ -42,7 +44,7 @@ export default {
         for (let j = 1; j < 4; j++) { // eslint-disable-line
           if (squares[i][j].num !== 0 && upMove(i, j, squares)) { // 值不为0且可移动
             const afterMove = upMove(i, j, squares);
-            score += afterMove.score;
+            score += afterMove.num === squares[i][j].num ? 0 : afterMove.num;
             const mySquares = merge({ i, j }, afterMove, squares, emptySquares);// 合并
             squares = mySquares.squares;
             emptySquares = mySquares.emptySquares;
@@ -61,8 +63,8 @@ export default {
         for (let j = 3; j >= 0; j--) { // eslint-disable-line
           if (squares[i][j].num !== 0 && downMove(i, j, squares)) { // 值不为0且可移动
             const afterMove = downMove(i, j, squares);
-            score += afterMove.score;
-            const mySquares = merge({ i, j }, downMove(i, j, squares), squares, emptySquares);// 合并
+            score += afterMove.num === squares[i][j].num ? 0 : afterMove.num;
+            const mySquares = merge({ i, j }, afterMove, squares, emptySquares);// 合并
             squares = mySquares.squares;
             emptySquares = mySquares.emptySquares;
           }
@@ -79,8 +81,8 @@ export default {
         for (let j = 0; j < 4; j++) { // eslint-disable-line
           if (squares[i][j].num !== 0 && leftMove(i, j, squares)) { // 值不为0且可移动
             const afterMove = leftMove(i, j, squares);
-            score += afterMove.score;
-            const mySquares = merge({ i, j }, leftMove(i, j, squares), squares, emptySquares);// 合并
+            score += afterMove.num === squares[i][j].num ? 0 : afterMove.num;
+            const mySquares = merge({ i, j }, afterMove, squares, emptySquares);// 合并
             squares = mySquares.squares;
             emptySquares = mySquares.emptySquares;
           }
@@ -92,14 +94,14 @@ export default {
     r_MoveRight(state) {
       let squares = [...state.squares];
       let emptySquares = [...state.emptySquares];
-      let score = parseInt(state.score); // eslint-disable-line
+      let score = state.score;
 
       for (let i = 3; i >= 0; i--) { // eslint-disable-line
         for (let j = 0; j < 4; j++) { // eslint-disable-line
           if (squares[i][j].num !== 0 && rightMove(i, j, squares)) { // 值不为0且可移动
-            const afterMove = leftMove(i, j, squares);
-            score += afterMove.score;
-            const mySquares = merge({ i, j }, rightMove(i, j, squares), squares, emptySquares);// 合并
+            const afterMove = rightMove(i, j, squares);
+            score += afterMove.num === squares[i][j].num ? 0 : afterMove.num;
+            const mySquares = merge({ i, j }, afterMove, squares, emptySquares);// 合并
             squares = mySquares.squares;
             emptySquares = mySquares.emptySquares;
           }
@@ -107,6 +109,10 @@ export default {
       }
 
       return { ...state, ...newSquare(emptySquares, squares), score };
+    },
+    r_updateVoice(state) {
+      // 游戏声音控制
+      return { ...state, voice: !state.voice };
     },
   },
 
@@ -145,12 +151,7 @@ let upMove = (i, j, squares) => {
   if (!(i + 1) || !(moveJ + 1)) {
     return;
   }
-  // 判断分数
-  let score = 0;
-  if (num === squares[i][j].num) {
-    score = num;
-  }
-  return { moveI: i, moveJ, num, score };
+  return { moveI: i, moveJ, num };
 };
 
 /**
@@ -182,15 +183,15 @@ const downMove = (i, j, squares) => {
   if (!(i + 1) || !(moveJ + 1)) {
     return;
   }
-  // 判断分数
-  let score = 0;
-  if (num === squares[i][j].num) {
-    score = num;
-  }
-  return { moveI: i, moveJ, num, score };
+  return { moveI: i, moveJ, num };
 };
 
-
+/**
+ * 向左移动
+ * @param {* x 轴位置} i
+ * @param {* y 轴位置} j
+ * @param {* 方块数组} squares
+ */
 const leftMove = (i, j, squares) => {
   let num = squares[i][j].num;
   let moveI = i; // 左右移动只改变 i
@@ -214,14 +215,15 @@ const leftMove = (i, j, squares) => {
   if (!(j + 1) || !(moveI + 1)) {
     return false;
   }
-  // 判断分数
-  let score = 0;
-  if (num === squares[i][j].num) {
-    score = num;
-  }
-  return { moveI, moveJ: j, num, score };
+  return { moveI, moveJ: j, num };
 };
 
+/**
+ * 向右移动1
+ * @param {* x 轴位置} i
+ * @param {* y 轴位置} j
+ * @param {* 方块数组} squares
+ */
 const rightMove = (i, j, squares) => {
   let num = squares[i][j].num;
   let moveI = i; // 左右移动只改变 i
@@ -245,12 +247,7 @@ const rightMove = (i, j, squares) => {
   if (!(j + 1) || !(moveI + 1)) {
     return false;
   }
-  // 判断分数
-  let score = 0;
-  if (num === squares[i][j].num) {
-    score = num;
-  }
-  return { moveI, moveJ: j, num, score };
+  return { moveI, moveJ: j, num };
 };
 
 

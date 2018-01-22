@@ -18,7 +18,6 @@ const keyN = 78;
 class Game extends PureComponent {
 
   componentDidMount() {
-    console.log(this);
     document.addEventListener('keyup', this.onKeyHandle.bind(this)); // eslint-disable-line
     // document.addEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
   }
@@ -73,6 +72,16 @@ class Game extends PureComponent {
     }
     return squareOption;
   }
+  restart() {
+    this.props.dispatch({
+      type: 'game/e_Init',
+    });
+  }
+  openVoice() {
+    this.props.dispatch({
+      type: 'game/r_updateVoice',
+    });
+  }
   render() {
     return (
       <div className={Style.container}>
@@ -101,6 +110,10 @@ class Game extends PureComponent {
               <div className={Style['gird-col']} />
             </div>
           </div>
+          <div className={Style['game-prompt']}>
+            <h2>提示:</h2>
+            <p>键盘按键 WSAD 也代表上下左右</p>
+          </div>
           <div className={Style['tile-container']}>
             {this.getSquares()}
           </div>
@@ -110,35 +123,35 @@ class Game extends PureComponent {
           <div className={Style.scores}>
             <div className={Style.score}>
               <span className={Style['score-num']}>得分</span>
-              <span className={Style['score-num']}>4</span>
+              <span className={Style['score-num']}>{this.props.score}</span>
             </div>
             <div className={Style.score}>
               <span className={Style['score-num']}>最佳</span>
-              <span className={Style['score-num']}>4</span>
+              <span className={Style['score-num']}>{this.props.score}</span>
             </div>
           </div>
           <div className={Style['square-config']}>
-            <Button size="large" type="large">
-              开启声音
+            <Button size="large" type="large" onClick={this.openVoice.bind(this)} >
+              {this.props.voice ? '关闭声音' : '开启声音'}
             </Button>
-            <Button size="large" type="large">
+            <Button size="large" type="large" onClick={this.restart.bind(this)}>
               重新开始
             </Button>
           </div>
           <div className={Style['square-move']}>
             <Row className={Style['move-up-down']}>
-              <Button size="large" type="primary">
+              <Button size="large" type="primary" onClick={this.onKeyHandle.bind(this, { keyCode: keyUp })}>
                 <Icon type="up" />
               </Button>
             </Row>
             <Row className={Style['move-left-right']}>
-              <Button size="large" type="primary">
+              <Button size="large" type="primary" onClick={this.onKeyHandle.bind(this, { keyCode: keyLeft })}>
                 <Icon type="left" />
               </Button>
-              <Button size="large" type="primary">
+              <Button size="large" type="primary" onClick={this.onKeyHandle.bind(this, { keyCode: keyDown })}>
                 <Icon type="down" />
               </Button>
-              <Button size="large" type="primary">
+              <Button size="large" type="primary" onClick={this.onKeyHandle.bind(this, { keyCode: keyRight })}>
                 <Icon type="right" />
               </Button>
             </Row>

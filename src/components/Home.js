@@ -30,7 +30,7 @@ class Home extends React.Component {
       </Menu>
     );
     return (
-      <Layout className="layout" style={{ position: 'fixed', width: '100%', height: '100%' }}>
+      <Layout className="layout" style={{ position: 'relative', width: '100%', height: '100%', minHeight: '920px' }}>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Menu
             theme="dark"
@@ -49,13 +49,13 @@ class Home extends React.Component {
             </Dropdown>
           </div>
         </Header>
-        <Content style={{ padding: '50px', height: '100%', position: 'relative' }}>
+        <Content style={{ margin: '100px 100px 0', height: '100%', position: 'relative' }}>
           { this.state.ItemIndex === '1'
             ? <Game />
             : (this.state.ItemIndex === '2' ? <Rank /> : <Comments />)}
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-      Ant Design ©2016 Created by Ant UED
+      React 2048 game created by ll
     </Footer>
       </Layout>
     );

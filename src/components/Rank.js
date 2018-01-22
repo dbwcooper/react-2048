@@ -53,7 +53,7 @@ class Rank extends PureComponent {
         option={this.getOption()}
         notMerge
         lazyUpdate
-        style={{ height: '100%', minHeight: 500, width: '100%' }}
+        style={{ height: '750px', width: '100%', margin: '0 auto' }}
         className="react_for_echarts"
       />
     );
