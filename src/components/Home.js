@@ -10,7 +10,7 @@ const { Header, Content, Footer } = Layout;
 
 class Home extends React.Component {
   state = {
-    ItemIndex: 1,
+    ItemIndex: '1',
   }
   handleClick(event) {
     this.setState({
@@ -18,7 +18,6 @@ class Home extends React.Component {
     });
   }
   render() {
-    console.log(this.props);
     const menu = (
       <Menu>
         <Menu.Item>
@@ -30,7 +29,7 @@ class Home extends React.Component {
       </Menu>
     );
     return (
-      <Layout className="layout" style={{ position: 'relative', width: '100%', minHeight: '950px' }}>
+      <Layout className="layout" style={{ position: 'relative', width: '100%', minWidth: '1080px', minHeight: '950px' }}>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Menu
             theme="dark"
@@ -54,9 +53,7 @@ class Home extends React.Component {
             ? <Game />
             : (this.state.ItemIndex === '2' ? <Rank /> : <Comments />)}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-      React 2048 game created by ll
-    </Footer>
+        <Footer style={{ textAlign: 'center' }}> React 2048 game created by ll </Footer>
       </Layout>
     );
   }
