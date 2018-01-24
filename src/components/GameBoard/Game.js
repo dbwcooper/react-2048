@@ -161,8 +161,7 @@ class Game extends PureComponent {
     );
   }
 }
-
 function mapStateToProps(state) {
-  return state.game;
+  return state.game || {};
 }
 export default connect(mapStateToProps)(Game);
