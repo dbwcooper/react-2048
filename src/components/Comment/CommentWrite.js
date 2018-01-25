@@ -8,17 +8,12 @@ class CommentWrite extends PureComponent {
     content: '',
     replayName: '',
   }
-  componentWillMount() {
-    this.setState({
-      content: this.props.commentWrite.replayName ? `@${this.props.commentWrite.replayName}` : '',
-    });
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.commentWrite.replayName === nextState.replayName) {
-      return false;
-    }
-    return true;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextProps.commentWrite.replayName === nextState.replayName) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
   handleChange(e) {
     this.setState({
       content: e.target.value,
@@ -26,7 +21,7 @@ class CommentWrite extends PureComponent {
   }
   // 增加评论
   addComment() {
-    if (!this.state.content || !this.state.content.replace(' ')) {
+    if (!this.state.content || !this.state.content.replace(/\s/g, '')) {
       return false;
     }
     const comment = {
