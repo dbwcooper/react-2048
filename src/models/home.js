@@ -25,6 +25,9 @@ export default {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
     },
+    *e_submitPerson({ payload }, { call, put}) { // eslint-disable-line
+
+    },
   },
   reducers: {
     save(state, action) {
@@ -45,6 +48,10 @@ export default {
     // 更新评论输入框内的值
     r_updateCommentWrite(state, { payload: commentWrite }) {
       return { ...state, commentWrite: { ...state.commentWrite, ...commentWrite } };
+    },
+    // 判断用户登录状态
+    r_updateLogin(state) {
+      return { ...state, isLogin: !state.isLogin };
     },
   },
 };

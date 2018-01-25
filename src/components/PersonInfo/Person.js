@@ -1,27 +1,21 @@
 import React, { PureComponent } from 'react';
-import { Modal } from 'antd';
+import { connect } from 'dva';
+import { Form } from 'antd';
 
 class Person extends PureComponent {
-  state = {
-    visible: true,
-  }
   handleOk() {
-    this.setState({
-      visible: !this.state.visible,
+    this.props.dispatch({
+      type: 'home/r_updateLogin',
     });
   }
   render() {
     return (
-      <Modal
-        title="用户信息"
-        visible={this.state.visible}
-        onOk={this.handleOk}
-        onCancel={this.handleOk}
-      >
-        <p>Some contents...</p>
-      </Modal>
+      <p>Some contents...</p>
     );
   }
 }
 
-export default Person;
+function mapStateToProps(state) {
+  return state.home;
+}
+export default connect(mapStateToProps)(Person);
