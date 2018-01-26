@@ -12,24 +12,14 @@ class Home extends React.Component {
   state = {
     ItemIndex: '1',
   }
-  // 根据用户是否登录 获取是否有下拉框的用户头像
-  getAvator() {
-    debugger;
-    const menu = (<Menu>
-      <Menu.Item>
-        <a href="##" onClick={this.updateUser.bind(this)}>个人资料</a>
-      </Menu.Item>
-      <Menu.Item>
-        <a href="##">退出登陆</a>
-      </Menu.Item>
-    </Menu>);
-
-    const avator = this.props.home.isLogin ? (
-      <Dropdown overlay={menu}>
-        <Avatar size="large" icon="user" onClick={this.updateLogin.bind(this)} />
-      </Dropdown>
-    ) : <Avatar size="large" icon="user" onClick={this.updateLogin.bind(this)} />;
-    return avator;
+  getContent() {
+    if (this.state.ItemIndex === '1') {
+      return (<Game />);
+    } else if (this.state.ItemIndex === '2') {
+      return (<Rank />);
+    } else if (this.state.ItemIndex === '3') {
+      return (<Comments />);
+    }
   }
   handleClick(event) {
     this.setState({
@@ -77,15 +67,12 @@ class Home extends React.Component {
             <Menu.Item key="3">留言板</Menu.Item>
           </Menu>
           <div style={{ lineHeight: '64px', padding: 12 }} >
-            {/* {this.getAvator.bind(this)} */}
             <Avatar size="large" icon="user" onClick={this.updateLogin.bind(this)} />
           </div>
         </Header>
         {/* <Person {...this.props} /> 为什么放在这里就不行 */}
         <Content style={{ margin: '100px 100px 0', height: '100%', position: 'relative' }}>
-          { this.state.ItemIndex === '1'
-            ? <Game />
-            : (this.state.ItemIndex === '2' ? <Rank /> : <Comments />)}
+          {this.getContent()}
         </Content>
         <Footer style={{ textAlign: 'center' }}> React 2048 game created by ll </Footer>
       </Layout>

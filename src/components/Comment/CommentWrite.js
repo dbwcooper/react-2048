@@ -48,7 +48,7 @@ class CommentWrite extends PureComponent {
         </Row>
         <Row>
           <Col style={{ fontSize: 16, fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>
-            <span> 共 29 条评论</span>
+            <span> 共 {this.props.comments.length} 条评论</span>
             <span>{this.props.username}</span>
           </Col>
           <Divider />
