@@ -18,7 +18,6 @@ const keyN = 78;
 class Game extends PureComponent {
 
   componentDidMount() {
-    console.log(this);
     document.addEventListener('keyup', this.onKeyHandle.bind(this)); // eslint-disable-line
     // document.addEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
   }
