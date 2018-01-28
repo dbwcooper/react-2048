@@ -1,4 +1,6 @@
 
+import * as personService from '../services/person';
+
 export default {
   namespace: 'home',
   state: {
@@ -25,19 +27,24 @@ export default {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
     },
-    *e_submitPerson({ payload }, { call, put}) { // eslint-disable-line
-
+    *e_submit({ payload : person }, { call, put}) { // eslint-disable-line
+      console.log(person);
+      // if (person.isRegister) {
+      //   // 调用用户注册的接口
+      //   await personService.register(person);
+      // } else {
+      //   // 调用用户登陆的接口
+      //   await personService.login(person);
+      // }
+      yield put({ type: 'r_Login' });
     },
   },
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
     },
-    r_updateUser(state) {
-      return state;
-    },
     r_Login(state) {
-      return { ...state, isLogin: true };
+      return { ...state, isLogin: !state.isLogin };
     },
     // 评论数组
     r_updateComment(state, { payload: comment }) {
