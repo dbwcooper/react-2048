@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Modal } from 'antd';
+import { Layout, Menu, Avatar } from 'antd';
 import { connect } from 'dva';
 import Rank from './Rank';
 import Comments from './Comment/Comments';
