@@ -1,11 +1,13 @@
 import request from '../utils/request';
 
+const API = 'http://localhost:8888/api/';
+
 /**
  * 注册一个用户
  * @param {*用户信息} user
  */
 export function register(user) {
-  return request('api/user', {
+  return request(`${API}user/register`, {
     method: 'POST',
     body: JSON.stringify(user),
   });

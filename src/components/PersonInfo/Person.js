@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import { Form, Input, Icon, Button } from 'antd';
+import { Form, Input, Icon, Button, Modal } from 'antd';
 
 const FormItem = Form.Item;
 class NormalLoginForm extends PureComponent {
@@ -31,19 +30,18 @@ class NormalLoginForm extends PureComponent {
     callback();
   }
 
-  // 用户登录
+  // 处理用户提交
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        if (this.state.isRegister) {
-          // 用户注册时判断两次输入的密码是否一致
-        }
         const person = { ...values, isRegister: this.state.isRegister };
         this.props.dispatch({
           type: 'home/e_submit',
           payload: person,
         });
+        // 关闭modal
+        this.props.showModal();
       }
     });
   }
@@ -57,50 +55,55 @@ class NormalLoginForm extends PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <FormItem>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: '请输入用户名 !' }],
-          })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />,
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请输入你的密码 !' },
-              {
-                validator: this.checkConfirm,
+      <Modal
+        title="用户信息"
+        visible={this.props.displayModal}
+        onOk={this.handleSubmit}
+        onCancel={this.props.showModal}
+      >
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          <FormItem>
+            {getFieldDecorator('username', {
+              rules: [{ required: true, message: '请输入用户名 !' }],
+            })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: '请输入你的密码 !' },
+                {
+                  validator: this.checkConfirm,
+                }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />,
+            )}
+          </FormItem>
+          <FormItem>
+            {this.state.isRegister ? getFieldDecorator('newpass', {
+              rules: [{
+                required: true, message: '请再次输入你的密码 !',
+              }, {
+                validator: this.checkPassword,
               }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />,
-          )}
-        </FormItem>
-        <FormItem>
-          {this.state.isRegister ? getFieldDecorator('resetPassword', {
-            rules: [{
-              required: true, message: '请再次输入你的密码 !',
-            }, {
-              validator: this.checkPassword,
-            }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Reset Password" onBlur={this.handleConfirmBlur} />,
-          ) : null}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            {this.state.isRegister ? '注册' : '登录'}
-          </Button>
-          <a href="##" style={{ paddingLeft: 16 }} onClick={this.register.bind(this)}>
-            {this.state.isRegister ? '已有账户' : '还没有账户?'}
-          </a>
-        </FormItem>
-      </Form>
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Reset Password" onBlur={this.handleConfirmBlur} />,
+            ) : null}
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              {this.state.isRegister ? '注册' : '登录'}
+            </Button>
+            <a href="##" style={{ paddingLeft: 16 }} onClick={this.register.bind(this)}>
+              {this.state.isRegister ? '已有账户' : '还没有账户?'}
+            </a>
+          </FormItem>
+        </Form>
+      </Modal>
     );
   }
 }
 
 const Person = Form.create()(NormalLoginForm);
-function mapStateToProps(state) {
-  return state.home;
-}
-export default connect(mapStateToProps)(Person);
+
+export default Person;

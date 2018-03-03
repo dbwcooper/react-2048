@@ -28,14 +28,18 @@ export default {
       yield put({ type: 'save' });
     },
     *e_submit({ payload : person }, { call, put}) { // eslint-disable-line
-      console.log(person);
-      // if (person.isRegister) {
-      //   // 调用用户注册的接口
-      //   await personService.register(person);
-      // } else {
-      //   // 调用用户登陆的接口
-      //   await personService.login(person);
-      // }
+      if (person.isRegister) {
+        // 调用用户注册的接口
+        const data = yield personService.register(person);
+        if (data.code === '200') {
+          // 注册成功 弹出注册成功框
+        } else {
+          // 注册失败
+        }
+      } else {
+        // 调用用户登陆的接口
+        yield personService.login(person);
+      }
       yield put({ type: 'r_Login' });
     },
   },

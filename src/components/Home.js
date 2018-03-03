@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Dropdown, Modal } from 'antd';
+import { Layout, Menu, Avatar, Modal } from 'antd';
 import { connect } from 'dva';
 import Rank from './Rank';
 import Comments from './Comment/Comments';
@@ -7,10 +7,10 @@ import Game from './GameBoard/Game';
 import Person from './PersonInfo/Person';
 
 const { Header, Content, Footer } = Layout;
-
 class Home extends React.Component {
   state = {
     ItemIndex: '1',
+    displayModal: false,
   }
   getContent() {
     if (this.state.ItemIndex === '1') {
@@ -26,34 +26,16 @@ class Home extends React.Component {
       ItemIndex: event.key,
     });
   }
-  updateLogin() {
-    this.props.dispatch({
-      type: 'home/r_updateLogin',
-    });
-  }
-  handleOk() {
-    // 提交弹出层填写的内容person
-    this.props.dispatch({
-      type: 'home/e_submitPerson',
-    });
-  }
-  handleCancel() {
-    // 隐藏弹出层
-    this.props.dispatch({
-      type: 'home/r_updateLogin',
+  // 控制用户信息的显示隐藏
+  showModal = () => {
+    this.setState({
+      displayModal: !this.state.displayModal,
     });
   }
   render() {
     return (
       <Layout className="layout" style={{ position: 'relative', width: '100%', minWidth: '1080px', minHeight: '950px', backgroundColor: '#fff' }}>
-        <Modal
-          title="用户信息"
-          visible={this.props.home.isLogin}
-          onOk={this.handleCancel.bind(this)}
-          onCancel={this.handleCancel.bind(this)}
-        >
-          <Person />
-        </Modal>
+        <Person {...this.props} displayModal={this.state.displayModal} showModal={this.showModal} />
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Menu
             theme="dark"
@@ -66,11 +48,10 @@ class Home extends React.Component {
             <Menu.Item key="2">排行榜</Menu.Item>
             <Menu.Item key="3">留言板</Menu.Item>
           </Menu>
-          <div style={{ lineHeight: '64px', padding: 12 }} >
-            <Avatar size="large" icon="user" onClick={this.updateLogin.bind(this)} />
+          <div style={{ lineHeight: '64px', padding: '12px', cursor: 'pointer' }} >
+            <Avatar size="large" icon="user" onClick={this.showModal} />
           </div>
         </Header>
-        {/* <Person {...this.props} /> 为什么放在这里就不行 */}
         <Content style={{ margin: '100px 100px 0', height: '100%', position: 'relative' }}>
           {this.getContent()}
         </Content>

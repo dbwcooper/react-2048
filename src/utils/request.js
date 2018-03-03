@@ -17,9 +17,18 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default async function request(url, options) {
-  return true;
-  // const response = await fetch(url, options);
-  // checkStatus(response);
-  // return await response.json();
+async function request(url, options) {
+  const Header = {
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'default',
+  };
+
+  const opt = { ...options, ...Header };
+  const response = await fetch(url, opt);
+  checkStatus(response);
+  return await response.json();
 }
+export default request;
