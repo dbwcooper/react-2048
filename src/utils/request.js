@@ -1,15 +1,4 @@
 import fetch from 'dva/fetch';
-
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
-}
-
 /**
  * Requests a URL, returning a promise.
  *
@@ -19,16 +8,18 @@ function checkStatus(response) {
  */
 async function request(url, options) {
   const Header = {
-    mode: 'no-cors',
+    mode: 'cors',
+    cache: 'default',
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'default',
   };
-
-  const opt = { ...options, ...Header };
-  const response = await fetch(url, opt);
-  checkStatus(response);
-  return await response.json();
+  const opts = { ...options, ...Header };
+  try {
+    return await fetch(url, opts).then(res => res.json());
+  } catch (error) {
+    return { code: 401, msg: error };
+  }
 }
+
 export default request;

@@ -1,5 +1,6 @@
-
+import { notification } from 'antd';
 import * as personService from '../services/person';
+
 
 export default {
   namespace: 'home',
@@ -27,18 +28,40 @@ export default {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'save' });
     },
-    *e_submit({ payload : person }, { call, put}) { // eslint-disable-line
-      if (person.isRegister) {
-        // 调用用户注册的接口
-        const data = yield personService.register(person);
-        if (data.code === '200') {
-          // 注册成功 弹出注册成功框
-        } else {
-          // 注册失败
-        }
-      } else {
+    *e_login({ payload : person }, { call, put}) { // eslint-disable-line
         // 调用用户登陆的接口
-        yield personService.login(person);
+      const result = yield personService.login(person);
+      if (result.code === 200) {
+        // 将token 放入cookie中
+        // 注册成功
+        notification.success({
+          message: '消息通知',
+          description: `${result.msg}`,
+        });
+      } else {
+        // 注册失败
+        notification.error({
+          message: '消息通知',
+          description: `登录失败! ${result.msg}`,
+        });
+      }
+      yield put({ type: 'r_Login' });
+    },
+    // 用户注册
+    *e_register({ payload: person }, { put }) {
+      const result = yield personService.register(person);
+      if (result.code === '200') {
+        // 注册成功
+        notification.success({
+          message: '消息通知',
+          description: '恭喜你, 注册成功!',
+        });
+      } else {
+        // 注册失败
+        notification.error({
+          message: '消息通知',
+          description: `注册失败! ${result.msg}`,
+        });
       }
       yield put({ type: 'r_Login' });
     },

@@ -18,8 +18,9 @@ export function register(user) {
  * @param {*用户信息} user
  */
 export function login(user) {
-  return request(`api/user?userName=${user.userName}&password=${user.password}`, {
-    method: 'GET',
+  return request(`${API}user/signin`, {
+    method: 'POST',
+    body: JSON.stringify(user),
   });
 }
 

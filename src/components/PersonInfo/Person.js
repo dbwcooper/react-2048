@@ -35,11 +35,9 @@ class NormalLoginForm extends PureComponent {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const person = { ...values, isRegister: this.state.isRegister };
-        this.props.dispatch({
-          type: 'home/e_submit',
-          payload: person,
-        });
+        let types = 'home/e_login';
+        if (this.state.isRegister) types = 'home/e_register';
+        this.props.dispatch({ type: types, payload: values });
         // 关闭modal
         this.props.showModal();
       }
@@ -94,7 +92,7 @@ class NormalLoginForm extends PureComponent {
             <Button type="primary" htmlType="submit" className="login-form-button">
               {this.state.isRegister ? '注册' : '登录'}
             </Button>
-            <a href="##" style={{ paddingLeft: 16 }} onClick={this.register.bind(this)}>
+            <a href="##" style={{ paddingLeft: 16 }} onClick={this.register}>
               {this.state.isRegister ? '已有账户' : '还没有账户?'}
             </a>
           </FormItem>
