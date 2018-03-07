@@ -1,3 +1,5 @@
+import { openNotification } from '../utils/util';
+
 export default {
   namespace: 'game',
   state: {
@@ -33,7 +35,8 @@ export default {
         }
       }
       const { emptySquares, squares } = newSquare(empty, mySquares);
-      return { ...state, ...newSquare(emptySquares, squares), score: 0 };
+      const bestScore = localStorage.getItem('bestScore');
+      return { ...state, ...newSquare(emptySquares, squares, 0), score: 0, bestScore };
     },
     r_MoveUp(state) {
       let squares = [...state.squares];
@@ -52,7 +55,7 @@ export default {
         }
       }
 
-      return { ...state, ...newSquare(emptySquares, squares), score };
+      return { ...state, ...newSquare(emptySquares, squares, score), score };
     },
     r_MoveDown(state) {
       let squares = [...state.squares];
@@ -70,7 +73,7 @@ export default {
           }
         }
       }
-      return { ...state, ...newSquare(emptySquares, squares), score };
+      return { ...state, ...newSquare(emptySquares, squares, score), score };
     },
     r_MoveLeft(state) {
       let squares = [...state.squares];
@@ -88,8 +91,7 @@ export default {
           }
         }
       }
-
-      return { ...state, ...newSquare(emptySquares, squares), score };
+      return { ...state, ...newSquare(emptySquares, squares, score), score };
     },
     r_MoveRight(state) {
       let squares = [...state.squares];
@@ -108,7 +110,7 @@ export default {
         }
       }
 
-      return { ...state, ...newSquare(emptySquares, squares), score };
+      return { ...state, ...newSquare(emptySquares, squares, score), score };
     },
     r_updateVoice(state) {
       // 游戏声音控制
@@ -134,10 +136,6 @@ let upMove = (i, j, squares) => {
     } else if (squares[i][n].num === num) {
       moveJ = n;
       num *= 2;
-      if (num === 2048) {
-        console.log('你赢了');
-      }
-      // this.getScore(num)
       break;
     } else {
       break;
@@ -169,9 +167,6 @@ const downMove = (i, j, squares) => {
     } else if (squares[i][n].num === num) {
       num *= 2;
       moveJ = n;
-      if (num === 2048) {
-        console.log('游戏结束');
-      }
       break;
     } else {
       break;
@@ -201,9 +196,6 @@ const leftMove = (i, j, squares) => {
     } else if (squares[n][j].num === num) {
       num *= 2;
       moveI = n;
-      if (num === 2048) {
-        console.log('游戏结束');
-      }
       break;
     } else {
       break;
@@ -233,9 +225,6 @@ const rightMove = (i, j, squares) => {
     } else if (squares[n][j].num === num) {
       num *= 2;
       moveI = n;
-      if (num === 2048) {
-        console.log('游戏结束');
-      }
       break;
     } else {
       break;
@@ -275,12 +264,21 @@ let merge = (beforeMove, afterMove, squares, emptySquares) => {
  * @param {* 空白数组方块} emptySquares
  * @param {* 显示数组方块} squares
  */
-const newSquare = (emptySquares, squares) => {
-  const { x, y, index } = randomPos(emptySquares); // 拿到坐标和当前随机生成的方块的位置
-  const num = Math.random() < 0.9 ? 2 : 4;// 随机新方块数值2或4
-  squares[x][y] = { num }; // eslint-disable-line
-  emptySquares.splice(index, 1);
-  return { emptySquares, squares };
+const newSquare = (emptySquares, squares, score) => {
+  window.localStorage.setItem('score', score);
+  if (score > window.localStorage.getItem('bestScore')) {
+    window.localStorage.setItem('bestScore', score);
+  }
+  if (emptySquares.length === 0) {
+    // 游戏结束
+    openNotification('info', '游戏结束');
+  } else {
+    const { x, y, index } = randomPos(emptySquares); // 拿到坐标和当前随机生成的方块的位置
+    const num = Math.random() < 0.9 ? 2 : 4;// 随机新方块数值2或4
+    squares[x][y] = { num }; // eslint-disable-line
+    emptySquares.splice(index, 1);
+    return { emptySquares, squares };
+  }
 };
 
 /**

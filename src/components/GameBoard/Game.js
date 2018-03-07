@@ -127,7 +127,7 @@ class Game extends PureComponent {
             </div>
             <div className={Style.score}>
               <span className={Style['score-num']}>最佳</span>
-              <span className={Style['score-num']}>{this.props.score}</span>
+              <span className={Style['score-num']}>{this.props.bestScore}</span>
             </div>
           </div>
           <div className={Style['square-config']}>

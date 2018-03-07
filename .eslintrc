@@ -1,6 +1,11 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
+  "globals": {
+    "document": true,
+    "localStorage": true,
+    "window": true
+  },
   "rules": {
     "linebreak-style": 0,
     "arrow-body-style": [0],

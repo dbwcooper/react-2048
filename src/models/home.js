@@ -32,8 +32,8 @@ export default {
         // 调用用户登陆的接口
       const result = yield personService.login(person);
       if (result.code === 200) {
-        // 将token 放入cookie中
-        // 注册成功
+        // 将token 放入cookie中 保存用户名和id 至localStorage
+
         notification.success({
           message: '消息通知',
           description: `${result.msg}`,
