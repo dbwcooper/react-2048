@@ -33,7 +33,7 @@ export default {
       const result = yield personService.login(person);
       if (result.code === 200) {
         // 将token 放入cookie中 保存用户名和id 至localStorage
-
+        document.cookie = `userId=${result.userId}`;
         notification.success({
           message: '消息通知',
           description: `${result.msg}`,
