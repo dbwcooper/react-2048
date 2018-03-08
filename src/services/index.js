@@ -43,3 +43,24 @@ export function patch(user) {
     method: 'PUT',
   });
 }
+
+/**
+ * 获取所有的评论
+ */
+export function getComments() {
+  return request(`${API}comments`, {
+    method: 'GET',
+  });
+}
+
+/**
+ * 增加一条评论
+ * @param {*用户id} userId
+ * @param {*评论内容对象} comment
+ */
+export function addComment(username, comment) {
+  return request(`${API}comment`, {
+    method: 'POST',
+    body: JSON.stringify({ ...comment, username }),
+  });
+}

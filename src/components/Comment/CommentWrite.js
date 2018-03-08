@@ -6,38 +6,26 @@ const { TextArea } = Input;
 class CommentWrite extends PureComponent {
   state = {
     content: '',
-    replayName: '',
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps.commentWrite.replayName === nextState.replayName) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
   handleChange(e) {
-    this.setState({
-      content: e.target.value,
-    });
+    this.setState({ content: e.target.value });
   }
   // 增加评论
   addComment() {
-    if (!this.state.content || !this.state.content.replace(/\s/g, '')) {
+    if (!this.state.content) {
       return false;
     }
     const comment = {
       content: this.state.content,
-      name: this.props.username,
-      time: new Date().getTime(),
+      username: this.props.username,
+      moment: new Date().getTime(),
     };
     this.props.dispatch({
-      type: 'home/r_updateComment',
+      type: 'home/e_updateComment',
       payload: comment,
     });
     // 删除当前TextArea内的内容
-
-    this.setState({
-      content: '',
-    });
+    this.setState({ content: '' });
   }
   render() {
     return (
