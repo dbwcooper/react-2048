@@ -3,7 +3,7 @@ import { Avatar, Row, Col } from 'antd';
 
 class CommentItem extends PureComponent {
   state = {
-    moment: formatTime(this.props.comment.moment),
+    moment: formatTime(new Date().getTime() - this.props.comment.moment),
   }
   render() {
     return (
@@ -28,9 +28,7 @@ class CommentItem extends PureComponent {
 
 export default CommentItem;
 
-let formatTime = (time) => {
-// 计算评论时间与当前时间的间距 毫秒
-  const substract = (new Date().getTime() - time);
+let formatTime = (substract) => {
   if (substract > 86400000) {
   // 向下取整
     return `${Math.floor(substract / 86400000)}天前`;

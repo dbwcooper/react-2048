@@ -5,6 +5,10 @@ class Rank extends PureComponent {
   // 需要的数据  yData=[] 排行榜上的前十名的名字数组,
   // series.data 是排行榜上每个人对应的数值大小
   // this.props.Rank.users this.props.Rank.scores
+  componentDidMount() {
+    // 拉去接口获取ranks的数据
+    console.log(this);
+  }
   getOption = () => {
     return {
       title: {

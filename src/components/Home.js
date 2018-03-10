@@ -12,11 +12,14 @@ class Home extends React.Component {
     ItemIndex: '1',
     displayModal: false,
   }
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'e_pushScore' });
+  }
   getContent() {
     if (this.state.ItemIndex === '1') {
       return (<Game />);
     } else if (this.state.ItemIndex === '2') {
-      return (<Rank />);
+      return (<Rank {...this.props} />);
     } else if (this.state.ItemIndex === '3') {
       return (<Comments />);
     }

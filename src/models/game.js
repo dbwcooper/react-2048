@@ -1,4 +1,5 @@
-import { openNotification } from '../utils/util';
+import { openNotification, getCookie } from '../utils/util';
+import { pushScore } from '../services';
 
 export default {
   namespace: 'game',
@@ -19,6 +20,13 @@ export default {
   effects: {
     *e_Init({ payload }, { put }) {
       yield put({ type: 'r_Init' });
+    },
+    *e_pushScore({ payload }, { select }) {
+      // yield put({ type: 'r_Init' });
+      const bestScore = yield select(state => state.game.bestScore);
+      const userId = yield getCookie('userId');
+      const username = yield getCookie('username');
+      yield pushScore(userId, username, bestScore);
     },
   },
 

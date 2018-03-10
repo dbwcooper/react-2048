@@ -24,7 +24,8 @@ class Game extends PureComponent {
   // 在当前组件被销毁时同时删除监听事件
   componentWillUnmount() {
     document.removeEventListener('keyup', this.onKeyHandle.bind(this), false); // eslint-disable-line
-    // document.removeEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
+    // 同时上传用户的最新bestScore;
+    this.props.dispatch({ type: 'game/e_pushScore' });
   }
   onKeyHandle(e) {
     switch (e.keyCode) {

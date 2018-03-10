@@ -64,3 +64,26 @@ export function addComment(username, comment) {
     body: JSON.stringify({ ...comment, username }),
   });
 }
+
+/**
+ * 上传分数
+ * @param {*用户id} userId
+ * @param {*评论内容对象} comment
+ */
+export function pushScore(userId, username, score) {
+  return request(`${API}user/${userId}/score`, {
+    method: 'POST',
+    body: JSON.stringify({ username, score }),
+  });
+}
+
+/**
+ * 得到排行榜
+ * @param {*用户id} userId
+ * @param {*评论内容对象} comment
+ */
+export function getRanks() {
+  return request(`${API}ranks`, {
+    method: 'GET',
+  });
+}

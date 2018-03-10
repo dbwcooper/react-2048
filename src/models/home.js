@@ -7,6 +7,7 @@ export default {
   state: {
     username: '',
     comments: [],
+    rank: [],
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -88,6 +89,19 @@ export default {
       if (code === 200) {
         yield put({ type: 'r_saveComments', comments });
       } else {
+        // 注册失败
+        notification.error({
+          message: '消息通知',
+          description: '系统错误!',
+        });
+      }
+    },
+    // 上传分数到数据库 待完成
+    *e_pushScore({ payload }, { select, put }) {
+
+      
+      const { code, comments } = yield Services.pushScore(userId, score, username);
+      if (code !== 200) {
         // 注册失败
         notification.error({
           message: '消息通知',
