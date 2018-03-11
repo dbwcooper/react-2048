@@ -22,7 +22,6 @@ export default {
       yield put({ type: 'r_Init' });
     },
     *e_pushScore({ payload }, { select }) {
-      // yield put({ type: 'r_Init' });
       const bestScore = yield select(state => state.game.bestScore);
       const userId = yield getCookie('userId');
       const username = yield getCookie('username');
@@ -125,6 +124,12 @@ export default {
     r_updateVoice(state) {
       // 游戏声音控制
       return { ...state, voice: !state.voice };
+    },
+    r_loginout(state) {
+      // 分数设置为0
+      localStorage.setItem('bestScore', 0);
+      localStorage.setItem('score', 0);
+      return { ...state, score: 0, bestScore: 0 };
     },
   },
 

@@ -27,11 +27,20 @@ export default {
       const result = yield Services.login(person);
       if (result.code === 200) {
         // userId,username 放入cookie中
-        document.cookie = `userId=${result.userId}`;
-        setCookie('userId', result.userId, 7);
+        document.cookie = `userId=${result.data.userId}`;
+        setCookie('userId', result.data.userId, 7);
         setCookie('username', person.username, 7);
         // 保存用户信息至redux
         yield put({ type: 'r_save', person });
+
+        // 设置localStorage 中的bestScore
+        const bestScore = yield localStorage.getItem('bestScore');
+        if (bestScore < result.data.score) {
+          yield localStorage.setItem('bestScore', result.data.score);
+        } else {
+          yield localStorage.setItem('bestScore', bestScore);
+        }
+        yield put({ type: 'game/e_Init', person });
         notification.success({
           message: '消息通知',
           description: `${result.msg}`,
@@ -108,6 +117,10 @@ export default {
         });
       }
     },
+    *e_loginout({ payload }, { put }) {
+      yield put({ type: 'r_loginout' });
+      yield put({ type: 'game/r_loginout' });
+    },
   },
   reducers: {
     r_save(state, { person }) {
@@ -124,6 +137,9 @@ export default {
         scoreList.push(item.score);
       });
       return { ...state, ranks: { username, scoreList } };
+    },
+    r_loginout(state) {
+      return { ...state, username: '' };
     },
   },
 };
