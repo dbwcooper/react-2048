@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Button, Icon, Row } from 'antd';
 import { connect } from 'dva';
+import moveAudio from '../../assets/move.mp3';
+import popupAudio from '../../assets/popup.mp3';
 import Style from './Game.css';
 import Square from './Square';
 
@@ -16,7 +18,12 @@ const keyD = 68;
 // n -> new game
 const keyN = 78;
 class Game extends PureComponent {
-
+  constructor(...args) {
+    super(...args);
+    // 游戏声音
+    this.audioMove = new window.Audio(moveAudio);
+    this.audioPopup = new window.Audio(popupAudio);
+  }
   componentDidMount() {
     document.addEventListener('keyup', this.onKeyHandle.bind(this)); // eslint-disable-line
     // document.addEventListener('keydown', this.onKeyHandle, false); // eslint-disable-line
@@ -31,27 +38,23 @@ class Game extends PureComponent {
     switch (e.keyCode) {
       case keyW:
       case keyUp:
-        this.props.dispatch({
-          type: 'game/r_MoveUp',
-        });
+        this.props.dispatch({ type: 'game/r_MoveUp' });
+        if (this.props.game.voice) this.audioPopup.play();
         break;
       case keyS:
       case keyDown:
-        this.props.dispatch({
-          type: 'game/r_MoveDown',
-        });
+        this.props.dispatch({ type: 'game/r_MoveDown' });
+        if (this.props.game.voice) this.audioPopup.play();
         break;
       case keyA:
       case keyLeft:
-        this.props.dispatch({
-          type: 'game/r_MoveLeft',
-        });
+        this.props.dispatch({ type: 'game/r_MoveLeft' });
+        if (this.props.game.voice) this.audioPopup.play();
         break;
       case keyD:
       case keyRight:
-        this.props.dispatch({
-          type: 'game/r_MoveRight',
-        });
+        this.props.dispatch({ type: 'game/r_MoveRight' });
+        if (this.props.game.voice) this.audioPopup.play();
         break;
       case keyN:
         this.props.onReset();
@@ -84,6 +87,7 @@ class Game extends PureComponent {
     });
   }
   render() {
+    console.log(this.props);
     return (
       <div className={Style.container}>
         <div className={Style['game-container']}>

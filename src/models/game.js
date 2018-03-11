@@ -63,6 +63,8 @@ export default {
         }
       }
 
+      // 播放音乐
+      videoPlayer();
       return { ...state, ...newSquare(emptySquares, squares, score), score };
     },
     r_MoveDown(state) {
@@ -255,7 +257,7 @@ const rightMove = (i, j, squares) => {
  * @param {* 整个显示方块的数组} squares
  * @param {* 空白方块数组} emptySquares
  */
-let merge = (beforeMove, afterMove, squares, emptySquares) => {
+const merge = (beforeMove, afterMove, squares, emptySquares) => {
   squares[beforeMove.i][beforeMove.j].num = 0; // eslint-disable-line
   squares[afterMove.moveI][afterMove.moveJ].num = afterMove.num; // eslint-disable-line
   emptySquares.push({ x: beforeMove.i, y: beforeMove.j });
@@ -298,4 +300,11 @@ const randomPos = (emptySquares) => {
   const x = emptySquares[index].x;
   const y = emptySquares[index].y;
   return { x, y, index };
+};
+
+/** */
+const videoPlayer = () => {
+  const audio = document.getElementById('myAudio');
+  audio.play();
+  console.log(123);
 };

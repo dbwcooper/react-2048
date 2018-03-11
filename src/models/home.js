@@ -7,7 +7,7 @@ export default {
   state: {
     username: '',
     comments: [],
-    rank: [],
+    ranks: {},
   },
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
@@ -96,12 +96,11 @@ export default {
         });
       }
     },
-    // 上传分数到数据库 待完成
-    *e_pushScore({ payload }, { select, put }) {
-
-      
-      const { code, comments } = yield Services.pushScore(userId, score, username);
-      if (code !== 200) {
+    *e_getRanks({ payload }, { put }) {
+      const { code, data } = yield Services.getRanks();
+      if (code === 200) {
+        yield put({ type: 'r_saveRanks', ranks: data });
+      } else {
         // 注册失败
         notification.error({
           message: '消息通知',
@@ -116,6 +115,15 @@ export default {
     },
     r_saveComments(state, { comments }) {
       return { ...state, comments: [...comments] };
+    },
+    r_saveRanks(state, { ranks }) {
+      const username = [];
+      const scoreList = [];
+      ranks.forEach((item) => {
+        username.push(item.username);
+        scoreList.push(item.score);
+      });
+      return { ...state, ranks: { username, scoreList } };
     },
   },
 };

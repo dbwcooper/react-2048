@@ -7,7 +7,7 @@ class Rank extends PureComponent {
   // this.props.Rank.users this.props.Rank.scores
   componentDidMount() {
     // 拉去接口获取ranks的数据
-    console.log(this);
+    this.props.dispatch({ type: 'home/e_getRanks' });
   }
   getOption = () => {
     return {
@@ -36,14 +36,13 @@ class Rank extends PureComponent {
       },
       yAxis: {
         type: 'category',
-        data: [12000, 13000, 14000, 15000, 16000, 17000, 18000, 'tesra praeo', 'wdrils seriy', 'mitla weild', 'philips zhang', 'cooper', ['最高分', 'Tom']],
+        data: this.props.home.ranks.username,
       },
       series: [
         {
           name: '跟我来冲榜',
           type: 'bar',
-          data: [12000, 13000, 14000, 15000, 16000, 17000, 18000,
-            18203, 23489, 29034, 104970, 131744, 140230],
+          data: this.props.home.ranks.scoreList,
           itemStyle: {
             normal: { color: '#1890ff' },
           },

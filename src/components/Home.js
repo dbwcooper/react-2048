@@ -17,7 +17,7 @@ class Home extends React.Component {
   }
   getContent() {
     if (this.state.ItemIndex === '1') {
-      return (<Game />);
+      return (<Game {...this.props} />);
     } else if (this.state.ItemIndex === '2') {
       return (<Rank {...this.props} />);
     } else if (this.state.ItemIndex === '3') {
@@ -59,6 +59,10 @@ class Home extends React.Component {
           {this.getContent()}
         </Content>
         <Footer style={{ textAlign: 'center' }}> React 2048 game created by ll </Footer>
+        <audio id="myAudio" controls="controls" loop="loop" autoPlay="autoplay">
+          <source src="/assets/move.mp3" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
       </Layout>
     );
   }
